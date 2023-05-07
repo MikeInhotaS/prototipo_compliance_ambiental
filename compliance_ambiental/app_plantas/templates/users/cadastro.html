@@ -1,0 +1,36 @@
+{% extends 'basico/menu.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <main class="form-signin w-100 m-auto">
+            <form action="{% url 'cadastro' %}" method="post">{% csrf_token %}
+                <h1 class="h3 mb-3 fw-normal">Cadastro</h1>
+
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingInputUsername" placeholder="Usuário" name="username">
+                    <label for="floatingInputUsername">Usuário</label>
+                </div>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingInputNome" placeholder="Primeiro nome" name="nome">
+                    <label for="floatingInputNome">Primeiro nome</label>
+                </div>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingInputSobrenome" placeholder="Sobrenome" name="sobrenome">
+                    <label for="floatingInputSobrenome">Sobrenome</label>
+                </div>
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="nome@exemplo.com" name="email">
+                    <label for="floatingInput">E-mail</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="Senha" name="senha">
+                    <label for="floatingPassword">Senha</label>
+                </div>
+
+                <button class="w-100 btn btn-lg btn-primary" type="submit" value="cadastrar">Cadastrar</button>
+            </form>
+        </main>
+    </div>
+</div>
+<p class="mt-5 mb-3 text-body-secondary">© Compliance Ambiental - Projeto integrador I - 2023</p>
+{% endblock %}
