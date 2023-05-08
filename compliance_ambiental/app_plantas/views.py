@@ -3,8 +3,10 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 from django.views.decorators.http import require_POST
 from .models import Plantas
+from .utils import criar_dicionario_plantas, inserir_dados
 
 # Create your views here.
 def home(request):
@@ -54,5 +56,14 @@ def login_app(request):
 def plataforma(request):
         return render(request, 'users/plataforma.html')
 
+
 def plantas(request):
-    return render(request, 'users/plantas.html')
+    plantas_list = Plantas.objects.all()
+    if not plantas_list:
+        dados_plantas = criar_dicionario_plantas()
+        inserir_dados(dados_plantas)
+        plantas_list = Plantas.objects.all()
+        print("***Inseri os dados em plantas agora!***")
+
+    context= {'plantas_list': plantas_list}
+    return render(request, 'users/plantas.html', context)

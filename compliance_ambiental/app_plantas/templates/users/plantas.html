@@ -1,15 +1,15 @@
 {% extends 'basico/menu.html' %}
 {% block content %}
 <div class="container">
-    <H1>Cheguei na Plataforma </H1>
+    <H1>Listagem de plantas</H1>
     <div class="card">
         <div class="card-header">
-          Featured
+          Nome Cientifico
         </div>
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <h5 class="card-title">Nome popular</h5>
+          <p class="card-text">Conteúdo de - bioma , presenca_nos_estados e estrategia_ecologica_ocupacao</p>
+          <a href="#" class="btn btn-primary">Ver esta planta em detalhes</a>
         </div>
       </div>
       <div class="card">
@@ -19,7 +19,7 @@
         <div class="card-body">
           <h5 class="card-title">Special title treatment</h5>
           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <a href="#" class="btn btn-primary">Ver esta planta em detalhes</a>
         </div>
       </div>
       <div class="card">
@@ -29,8 +29,13 @@
         <div class="card-body">
           <h5 class="card-title">Special title treatment</h5>
           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <a href="#" class="btn btn-primary">Ver esta planta em detalhes</a>
         </div>
       </div>
+      <ul>
+        {% for planta in plantas_list %}
+            <li>{{ planta.nome_popular }} ({{ planta.especie }}), altura: {{ planta.bioma }}</li>
+        {% endfor %}
+        </ul>
 </div>
 {% endblock %}
