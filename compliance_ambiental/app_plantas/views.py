@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from .models import Plantas
 
 # Create your views here.
 def home(request):
@@ -52,3 +53,6 @@ def login_app(request):
 @login_required(login_url='/auth/login/')
 def plataforma(request):
         return render(request, 'users/plataforma.html')
+
+def plantas(request):
+    return render(request, 'users/plantas.html')
