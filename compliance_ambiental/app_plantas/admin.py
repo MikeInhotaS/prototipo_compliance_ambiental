@@ -4,3 +4,4 @@ from django.contrib import admin
 from .models import Plantas, Projetos
 
 admin.site.register(Plantas)
+admin.site.register(Projetos)
