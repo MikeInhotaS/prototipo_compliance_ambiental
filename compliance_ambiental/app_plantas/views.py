@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.contrib import messages
 from django.views.decorators.http import require_POST
-from .models import Plantas
+from .models import Plantas, Projetos
 from .utils import inserir_dados
 
 
@@ -43,7 +43,6 @@ def cadastro(request):
         return HttpResponse(f"Cadastrado como: {username}")
     # depois necessário logar esse mesmo usuário novo.
 
-
 def login_app(request):
     if request.method == "GET":
         return render(request, "users/login_app.html")
@@ -58,10 +57,55 @@ def login_app(request):
         else:
             return HttpResponse("Usuário ou senha inválidos")
 
+def logout_app(request):
+    logout(request)
+    message= messages.success(request, ("Você foi deslogado com sucesso!"))
+    return redirect('home')
 
 @login_required(login_url="/auth/login/")
 def plataforma(request):
-    return render(request, "users/plataforma.html")
+    plantas_list = Plantas.objects.all()
+    context = {"plantas_list": plantas_list}
+    return render(request, "users/plataforma.html", context) # return render(request, "users/plataforma.html")
+
+def projetos(request):
+    plantas_list = Plantas.objects.all()
+    projetos_list = Projetos.objects.all()
+    context = {"plantas_list": plantas_list,
+               "projetos_list": projetos_list}
+    return render(request, "users/projetos.html", context)
+
+def criar_projeto(request):
+    plantas_list = Plantas.objects.all()
+    projetos_list = Projetos.objects.all()
+    context = {"plantas_list": plantas_list,
+               "projetos_list": projetos_list}
+    
+    if request.method == "GET":
+        return render(request, "users/projetos.html", context)
+    else:        
+        nome = request.POST.get("titulo")
+        descricao = request.POST.get("descricao")
+        planta_select = request.POST.get("planta_select")
+        planta_select= int(planta_select)
+        print("aqui: ", nome, descricao, planta_select)
+        print('Tipo de planta_select: ', type(planta_select))
+        novo_projeto = Projetos.objects.create(
+                nome = nome,
+                descricao = descricao
+            )
+        novo_projeto.save()
+        print("O novo projeto: ", novo_projeto)
+        planta_bd= Plantas.objects.get(id_planta=planta_select)
+        novo_projeto.plantas.add(planta_bd)
+        print("A planta buscada é: ", planta_bd.especie, "id: ", planta_bd.id_planta)
+        return render(request, "users/projetos.html", context)
+
+        # projetos_list = Projetos.objects.all()
+        # if not projetos_list:
+        #     return HttpResponse("Não há projetos ainda.")
+        # else:
+        #     nome
 
 
 def plantas(request):

@@ -37,4 +37,4 @@ class Projetos(models.Model):
     id_projeto = models.AutoField(primary_key=True)
     nome = models.TextField(max_length=100)
     descricao = models.TextField(max_length=1024)
-    plantas = models.ManyToManyField(Plantas)
+    plantas = models.ManyToManyField(Plantas, related_name="projetos")

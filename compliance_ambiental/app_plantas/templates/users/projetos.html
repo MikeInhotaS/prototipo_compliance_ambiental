@@ -1,0 +1,63 @@
+{% extends 'basico/menu.html' %}
+{% block content %}
+<div class="container">
+    <section> <!-- class="text-center" -->
+        <div class="row">
+            <!-- Lado Esquerdo -->
+            <div class="col-lg-5 col-md-6 mb-5 mb-md-5 mb-lg-0 position-relative">
+                <h4>Criar novo projeto</h4>
+                <form action="{% url 'criar_projeto' %}" method="post">{% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Meu projeto" 
+                        name="titulo">
+                        <label for="floatingInput">Nome do projeto</label>
+                        <div id="nomeHelp" class="form-text">Este campo é obrigatório.</div>
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Deixe uma descrição aqui." id="floatingTextarea2"
+                            style="height: 100px" name="descricao"></textarea>
+                        <label for="floatingTextarea2">Descrição do projeto.</label>
+                    </div>
+                    <br>
+                    <select class="form-select" aria-label="Default select example" name="planta_select">
+                        <option selected>Escolha a primeira planta do seu projeto</option>
+
+                        {% for planta in plantas_list %}
+                        <option value="{{planta.id_planta}}" name="{{planta.id_planta}}">
+                            {{planta.id_planta}} - {{ planta.bioma }} - {{planta.especie}}
+                        </option>
+                        {% endfor %}
+
+                    </select>
+                    <br>
+                    <button type="submit" class="btn btn-outline-dark">Criar</button>
+                </form>
+
+                <div class="vr vr-blurry position-absolute my-0 h-100 d-none d-md-block top-0 end-0"></div>
+            </div>
+            <!-- Lado Direito -->
+            <div class="col-lg-7 col-md-6 mb-5 mb-md-5 mb-lg-0 position-relative">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">An item</li>
+                    {% for projeto in projetos_list %}
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Nome: {{projeto.nome}}</div>
+                            {{projeto.descricao}}
+                        </div>
+                        <span class="badge bg-success rounded-pill">
+                            Qtd. Plantas: {{ projeto.plantas.count }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                </ul>
+                <!-- <div class="vr vr-blurry position-absolute my-0 h-100 d-none d-md-block top-0 end-0"></div> -->
+            </div>
+
+        </div>
+    </section>
+</div>
+{% endblock %}
