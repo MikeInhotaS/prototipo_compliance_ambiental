@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.http import require_POST
+from django.views.decorators.cache import cache_control
 from .models import Plantas, Projetos
 from .utils import inserir_dados
 
@@ -59,10 +60,11 @@ def login_app(request):
 
 def logout_app(request):
     logout(request)
-    message= messages.success(request, ("Você foi deslogado com sucesso!"))
+    messages.success(request, "Você foi deslogado com sucesso!")
     return redirect('home')
 
 @login_required(login_url="/auth/login/")
+@cache_control(no_cache=True, must_revalidade=True, no_store=True)
 def plataforma(request):
     plantas_list = Plantas.objects.all()
     context = {"plantas_list": plantas_list}
@@ -135,7 +137,32 @@ def plantas(request):
 
 def detalhe_planta(request, id_planta):
     planta= Plantas.objects.get(id_planta=id_planta)
-    return render(request, "users/detalhe_planta.html", {"planta": planta})
+    nos_projetos= planta.projetos.all()
+    id_projeto=[projeto.id_projeto for projeto in nos_projetos]
+    print("id_projeto é: ",id_projeto)
+    outros_projetos = Projetos.objects.exclude(id_projeto__in=id_projeto)
+    print("Os projetos que não tem esta planta: ",outros_projetos)
+    context = {"planta": planta, 
+               "nos_projetos": nos_projetos,
+               "outros_projetos": outros_projetos}
+    return render(request, "users/detalhe_planta.html", context)
+
+def add_planta(request, id_planta, id_projeto):
+    projeto = Projetos.objects.get(id_projeto=id_projeto)
+    planta= Plantas.objects.get(id_planta=id_planta)
+    projeto.plantas.add(planta)
+    print("Projeto: ", projeto, "Planta: ", planta)
+    todas = projeto.plantas.all()
+    print("As plan deste proj agora são: ", todas)
+    projeto.save()
+    return redirect('detalhe_planta', id_planta)
+
+def remove_planta(request, id_planta, id_projeto):
+    projeto = Projetos.objects.get(id_projeto=id_projeto)
+    planta= Plantas.objects.get(id_planta=id_planta)
+    projeto.plantas.remove(planta)
+    projeto.save()
+    return redirect('detalhe_planta', id_planta)
 
 plantas_sao_p = [
     [

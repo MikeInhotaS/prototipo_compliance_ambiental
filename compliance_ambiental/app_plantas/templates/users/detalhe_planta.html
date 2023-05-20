@@ -1,71 +1,112 @@
 {% extends 'basico/menu.html' %}
 {% block content %}
 <div class="container">
-  <H1>Detalhes: {{planta.especie}}</H1>
+  <section> <!-- class="text-center" -->
+    <div class="row">
+      <!-- Lado Esquerdo -->
+      <div class="col-lg-8 col-md-6 mb-5 mb-md-5 mb-lg-0 position-relative">
 
+        <div class="row">
+          <div class="col-lg-8 col-md-6">
+            <h4>Detalhes: {{planta.especie}}</h4>
+          </div>
+          <div class="col-lg-4 col-md-3 text-end">
+            <a href="{% url 'plantas' %}" class="btn btn-dark btn-sm mb-1">Voltar a lista</a>
+          </div>
+        </div>
 
-  <div class="card">
-    <div class="card-header">
-        Nome popular: {{ planta.nome_popular }}
+        <div class="card">
+          <div class="card-header">
+            Nome popular: {{ planta.nome_popular }}
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Bioma: {{ planta.bioma }}</h5>
+            <p class="card-text">
+              É empregada na estratégia ecologica de ocupação do tipo
+              <em><b>{{planta.estrategia_ecologica_ocupacao}}</b></em>
+              e seu uso econômico é geralmente <em><b>{{planta.uso_economico}}</b></em>.
+            </p>
+            <table class="table align-middle table-hover text-break">
+              <thead>
+                <tr class="text-center">
+                  <th scope="row " colspan="2">Outras características</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Porte:</th>
+                  <td>{{planta.porte_da_planta}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Sinonímia</th>
+                  <td>{{planta.sinonimia}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Família</th>
+                  <td>{{planta.familia}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Formação vegetal</th>
+                  <td>{{planta.formacao_vegetal}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Fitofisionomias</th>
+                  <td>{{planta.fitofisionomias}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">% de germinação</th>
+                  <td>{{planta.porcentagem_germinacao}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Semeadura</th>
+                  <td>{{planta.semeadura}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Nível de Sombreamento da muda no viveiro</th>
+                  <td>{{planta.nivel_sombreamento_muda_viveiro}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Tolerância a sombra</th>
+                  <td>{{planta.tolerancia_sombra}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Desenvolvimento da muda no campo</th>
+                  <td>{{planta.desenvolvimento_muda_campo}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <a href="{% url 'plantas' %}" class="btn btn-dark">Voltar a lista</a>
+
+          </div>
+        </div> <!-- final do card -->
+
+        <div class="vr vr-blurry position-absolute my-0 h-100 d-none d-md-block top-0 end-0 text-success"></div>
+      </div>
+      <!-- Lado Direito -->
+      <div class="col-lg-4 col-md-2 mb-5 mb-md-5 mb-lg-0 position-relative">
+        <h6>Projetos com esta planta</h6>
+        {% for projeto in nos_projetos %}
+        <p><a href="{% url 'detalhe_projeto' projeto.id_projeto %}"
+            class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+            -- {{projeto.nome}}
+          </a>
+        </p>
+        {% endfor %}
+        <div class="text-success">
+          <hr>
+        </div>
+        <h6>Adicionar planta a um projeto</h6>
+        {% for projeto in outros_projetos %}
+        <p><a href="{% url 'add_planta' planta.id_planta projeto.id_projeto %}"
+            class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+            -- {{projeto.nome}}
+          </a>
+        </p>
+        {% endfor %}
+      </div>
     </div>
-    <div class="card-body">
-      <h5 class="card-title">Bioma: {{ planta.bioma }}</h5>
-      <p class="card-text">
-        É empregada na estratégia ecologica de ocupação do tipo <em>{{planta.estrategia_ecologica_ocupacao}}</em>
-        e seu uso econômico é geralmente <em>{{planta.uso_economico}}</em>.
-      </p>
-      <table class="table align-middle table-hover text-break">
-        <thead>
-          <tr class="text-center">
-            <th scope="row " colspan="2">Outras características</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Porte:</th>
-            <td>{{planta.porte_da_planta}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Sinonímia</th>
-            <td>{{planta.sinonimia}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Família</th>
-            <td>{{planta.familia}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Formação vegetal</th>
-            <td>{{planta.formacao_vegetal}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Fitofisionomias</th>
-            <td>{{planta.fitofisionomias}}</td>
-          </tr>
-          <tr>
-            <th scope="row">% de germinação</th>
-            <td>{{planta.porcentagem_germinacao}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Semeadura</th>
-            <td>{{planta.semeadura}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Nível de Sombreamento da muda no viveiro</th>
-            <td>{{planta.nivel_sombreamento_muda_viveiro}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Tolerância a sombra</th>
-            <td>{{planta.tolerancia_sombra}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Desenvolvimento da muda no campo</th>
-            <td>{{planta.desenvolvimento_muda_campo}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <a href="{% url 'plantas' %}" class="btn btn-outline-dark">Voltar a lista</a>
-    </div>
-  </div>
+  </section>
 
 </div>
 {% endblock %}

@@ -43,7 +43,7 @@
                         <td>{{planta.estrategia_ecologica_ocupacao|truncatechars:20}}</td>
                         <td>{{planta.uso_economico|truncatechars:40}}</td>
                         <td class="text-end">
-                            <a href="#"
+                            <a href="{% url 'remove_planta' planta.id_planta projeto.id_projeto %}"
                                 class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
                                 Excluir
                             </a>
