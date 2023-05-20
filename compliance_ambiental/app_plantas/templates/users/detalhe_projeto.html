@@ -1,0 +1,68 @@
+{% extends 'basico/menu.html' %}
+{% block content %}
+<div class="container">
+    <H4>Detalhes do projeto: {{projeto.nome}}</H4>
+
+    <div class="card">
+        <div class="card-header">
+            Ver e Editar projeto
+        </div>
+        <div class="card-body">
+            <form action="{% url 'altera_projeto' projeto.id_projeto %}" method="post">{% csrf_token %}
+                <div class="form-floating mb-1">
+                    <input type="text" class="form-control" id="floatingInput" value="{{projeto.nome}}" name="titulo">
+                    <label for="floatingInput">Nome do projeto</label>
+                </div>
+                <div class="form-floating mb-1">
+                    <textarea class="form-control" value="{{projeto.descricao}}" id="floatingTextarea2"
+                        style="height: 100px" name="descricao">{{projeto.descricao}}</textarea>
+                    <label for="floatingTextarea2">Descrição do projeto.</label>
+                </div>
+                <button type="submit" class="btn btn-outline-success">Salvar alteração</button>
+            </form>
+
+            <table class="table align-middle table-hover text-break">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="row " colspan="6">Plantas neste projeto</th>
+                    </tr>
+                    <tr class="text-start">
+                        <th scope="row " colspan="1">ID</th>
+                        <th scope="row " colspan="1">Bioma</th>
+                        <th scope="row " colspan="1">Espécie</th>
+                        <th scope="row " colspan="1">Estratégia de ocupação</th>
+                        <th scope="row " colspan="2">Uso econômico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for planta in plantas_list %}
+                    <tr>
+                        <th scope="row">{{planta.id_planta}}</th>
+                        <td>{{planta.bioma}}</td>
+                        <td>{{planta.especie|truncatechars:20}}</td>
+                        <td>{{planta.estrategia_ecologica_ocupacao|truncatechars:20}}</td>
+                        <td>{{planta.uso_economico|truncatechars:40}}</td>
+                        <td class="text-end">
+                            <a href="#"
+                                class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                Excluir
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+            <div class="b-example-divider text-end">
+                <br>
+            </div>
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'projetos' %}" class="btn btn-dark">Voltar a lista</a>
+                <a href="{% url 'deleta_projeto' projeto.id_projeto %}" class="btn btn-danger">Deletar projeto</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

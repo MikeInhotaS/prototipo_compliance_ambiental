@@ -88,8 +88,6 @@ def criar_projeto(request):
         descricao = request.POST.get("descricao")
         planta_select = request.POST.get("planta_select")
         planta_select= int(planta_select)
-        print("aqui: ", nome, descricao, planta_select)
-        print('Tipo de planta_select: ', type(planta_select))
         novo_projeto = Projetos.objects.create(
                 nome = nome,
                 descricao = descricao
@@ -101,12 +99,27 @@ def criar_projeto(request):
         print("A planta buscada é: ", planta_bd.especie, "id: ", planta_bd.id_planta)
         return render(request, "users/projetos.html", context)
 
-        # projetos_list = Projetos.objects.all()
-        # if not projetos_list:
-        #     return HttpResponse("Não há projetos ainda.")
-        # else:
-        #     nome
+def detalhe_projeto(request, id_projeto):
+    projeto = Projetos.objects.get(id_projeto=id_projeto)
+    aux_list = projeto.plantas.all()
+    context = {"plantas_list": aux_list,
+               "projeto": projeto}
+    return render(request, "users/detalhe_projeto.html", context)
 
+def altera_projeto(request, id_projeto):
+    nome = request.POST.get("titulo")
+    descricao = request.POST.get("descricao")
+    projeto = Projetos.objects.get(id_projeto=id_projeto)
+    print('o nome do projeto a ser alterado é: ', projeto.nome)
+    projeto.nome = nome
+    projeto.descricao = descricao
+    projeto.save()
+    return redirect('criar_projeto')
+
+def deleta_projeto(request, id_projeto):
+    projeto = Projetos.objects.get(id_projeto=id_projeto)
+    projeto.delete()
+    return redirect('criar_projeto')
 
 def plantas(request):
     plantas_list = Plantas.objects.all()

@@ -8,8 +8,8 @@
                 <h4>Criar novo projeto</h4>
                 <form action="{% url 'criar_projeto' %}" method="post">{% csrf_token %}
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Meu projeto" 
-                        name="titulo">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Meu projeto"
+                            name="titulo">
                         <label for="floatingInput">Nome do projeto</label>
                         <div id="nomeHelp" class="form-text">Este campo é obrigatório.</div>
                     </div>
@@ -37,22 +37,27 @@
             </div>
             <!-- Lado Direito -->
             <div class="col-lg-7 col-md-6 mb-5 mb-md-5 mb-lg-0 position-relative">
+                <h4>Projetos atuais</h4>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
+                    {% if not projetos_list %}
+                    <li class="list-group-item">Você não tem nenhum projeto.</li>
+                    {% else %}
+
                     {% for projeto in projetos_list %}
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
                             <div class="fw-bold">Nome: {{projeto.nome}}</div>
-                            {{projeto.descricao}}
+                            <a href="{% url 'detalhe_projeto' projeto.id_projeto %}"
+                                class="link-offset-2 link-offset-3-hover link-underline-opacity-0 link-underline-opacity-75-hover text-reset link-underline-success">
+                                Descrição: {{projeto.descricao}}
+                            </a>
                         </div>
                         <span class="badge bg-success rounded-pill">
                             Qtd. Plantas: {{ projeto.plantas.count }}
                         </span>
                     </li>
                     {% endfor %}
-                    <li class="list-group-item">A third item</li>
-                    <li class="list-group-item">A fourth item</li>
-                    <li class="list-group-item">And a fifth one</li>
+                    {% endif %}
                 </ul>
                 <!-- <div class="vr vr-blurry position-absolute my-0 h-100 d-none d-md-block top-0 end-0"></div> -->
             </div>
