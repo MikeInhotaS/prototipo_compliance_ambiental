@@ -4,32 +4,134 @@
     <section> <!-- class="text-center" -->
         <div class="row">
             <!-- Lado Esquerdo -->
-            <div class="col-lg-3 col-md-6 mb-5 mb-md-5 mb-lg-0 position-relative">
+            <div class="col-lg-4 col-md-6 mb-5 mb-md-5 mb-lg-0 position-relative">
                 <h5>Bem vindo {{user.username}}</h5>
-                <p><a href="#"
-                        class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
-                        Ver meus projetos.
-                    </a>
-                </p>
+
+                <div class="card mb-2" style="width: 18rem;">
+                    {% load static %}
+                    <img src="{% static 'app_plantas/o_cerrado_.jpg' %}" class="card-img-top" alt="Cerrado">
+                    <div class="card-body">
+                        <h6 class="card-title text-success">Cerrado</h6>
+                        <p class="card-text">
+                            O Cerrado, ou savana brasileira, 2º maior e mais ameaçado bioma do Brasil, abrange 22% do
+                            nosso território. Possui grande biodiversidade e potencial aquífero, enfrentando alta
+                            degradação humana. Com mais de 11.600 espécies de plantas, muitas endêmicas, sua vegetação
+                            varia de campos limpos a cerradões densos. O clima predominante é tropical sazonal, com
+                            invernos secos e verões chuvosos. O Cerrado é vital pelo potencial econômico e medicinal de
+                            suas espécies. Comunidades indígenas, como Karajás, Avá-Canoeiros e Xerentes, dependem do
+                            bioma para sua subsistência, tornando sua preservação essencial.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card mb-2" style="width: 18rem;">
+                    {% load static %}
+                    <img src="{% static 'app_plantas/a_mata_atlantica_.jpg' %}" class="card-img-top" alt="Mata Atlântica">
+                    <div class="card-body">
+                        <h6 class="card-title text-success">Mata Atlântica</h6>
+                        <p class="card-text">
+                            A Mata Atlântica, um dos biomas mais ameaçados do planeta, possui apenas 7% de sua cobertura
+                            original devido à intensa devastação causada por atividades econômicas. Com uma diversidade
+                            de flora e fauna, incluindo espécies endêmicas e ameaçadas de extinção, esse bioma
+                            desempenha um papel crucial nas bacias hidrográficas do país. A preservação da Mata
+                            Atlântica exige políticas públicas para reverter sua redução e garantir a sobrevivência
+                            desse ecossistema rico e único.
+                        </p>
+                    </div>
+                </div>
 
                 <div class="vr vr-blurry position-absolute my-0 h-100 d-none d-md-block top-0 end-0"></div>
             </div>
             <!-- Lado Direito -->
-            <div class="col-lg-9 col-md-6 mb-5 mb-md-5 mb-lg-0 position-relative">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Nem sei o Que renderizar aqui?</li>
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">Titulo do projeto</div>
-                            Conteudo da descrição - Só uma parte
+            <div class="col-lg-8 col-md-6 mb-5 mb-md-5 mb-lg-0 position-relative">
+                <div class="container text-center">
+                    <h5>Estratégias ecológicas de restauração</h5>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <div class="card" style="width: 20rem;">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-success"> 1- ISOLAMENTO OU RETIRADA DOS
+                                        FATORES DE DEGRADAÇÃO </h6>
+                                    <p class="card-text">Antes de iniciar a restauração ecológica, é fundamental
+                                        eliminar ou
+                                        isolar os fatores de degradação, evitando desperdício de esforços e recursos. O
+                                        isolamento permite melhor desenvolvimento da vegetação nativa, aumentando a
+                                        eficiência
+                                        da restauração e reduzindo custos. Degradações incluem trânsito de animais,
+                                        desmatamento, incêndios e extração de madeira. Sua remoção é essencial para
+                                        obter
+                                        resultados satisfatórios.</p>
+                                </div>
+                            </div>
                         </div>
-                        <span class="badge bg-success rounded-pill">Qtd. Plantas (1)</span>
-                    </li>
-                    <li class="list-group-item">Talvez informações sobre os biomas</li>
-                    <li class="list-group-item">E também sobre as estratégias de recuperação</li>
-                </ul>
-                <!-- <div class="vr vr-blurry position-absolute my-0 h-100 d-none d-md-block top-0 end-0"></div> -->
-            </div>
+                        <div class="col">
+                            <div class="card" style="width: 20rem;">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-success"> 2- EXPRESSÃO DO POTENCIAL DE
+                                        RESILIÊNCIA LOCAL E CONDUÇÃO DA REGENERAÇÃO NATURAL </h6>
+                                    <p class="card-text">A regeneração natural é crucial na restauração ecológica,
+                                        reduzindo a necessidade de introdução de espécies. A presença de regenerantes
+                                        acelera o desenvolvimento da área, diminuindo custos. A proximidade com
+                                        remanescentes naturais de vegetação facilita a chegada e o estabelecimento de
+                                        espécies. A condução da regeneração envolve a eliminação de plantas indesejadas
+                                        e a limpeza do entorno dos regenerantes. A fertilização também melhora o
+                                        crescimento.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Fim Row -->
+                    <div class="row mb-2">
+                        <div class="col">
+                            <div class="card" style="width: 20rem;">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-success"> 3- VIABILIZAÇÃO DO RECOBRIMENTO DA
+                                        ÁREA A SER RESTAURADA </h6>
+                                    <p class="card-text">Após dois anos de isolamento da área, é importante realizar uma
+                                        avaliação da regeneração natural. Dependendo da situação encontrada, diferentes
+                                        metodologias de restauração podem ser adotadas. A fase de recobrimento busca
+                                        promover a formação de uma estrutura florestal, reduzindo a competição com
+                                        espécies invasoras e criando um ambiente propício para o estabelecimento de
+                                        outras espécies. A escolha da metodologia deve ser baseada no potencial de
+                                        resiliência observado na vegetação regenerante.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card" style="width: 20rem;">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-success"> 4- ENRIQUECIMENTO DE ÁREA RECOBERTA
+                                    </h6>
+                                    <p class="card-text">Após estabelecer a estrutura florestal, é necessário enriquecer
+                                        a área em restauração com espécies do grupo de diversidade. Essas espécies, que
+                                        incluem arbustos, arvoretas e outras formas de vida vegetal, são fundamentais
+                                        para substituir gradualmente as espécies de recobrimento, garantindo a
+                                        perpetuação da floresta. O enriquecimento representa a consolidação da floresta
+                                        e contribui para a regeneração natural, oferecendo alimentos para a fauna e
+                                        atraindo dispersores. O monitoramento contínuo da área orienta a introdução dos
+                                        grupos funcionais adequados durante o processo de enriquecimento.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Fim Row -->
+                    <div class="row mb-2">
+                        <div class="col">
+                            <div class="card" style="width: 20rem;">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-success"> 5- MÉTODO ALTERNATIVO: RECOBRIMENTO
+                                        E ENRIQUECIMENTO EM ÁREA ABERTA </h6>
+                                    <p class="card-text">O modelo de restauração florestal com enriquecimento em área
+                                        aberta consiste na implantação total da área com a introdução simultânea de
+                                        espécies dos grupos de recobrimento e diversidade. O plantio é realizado em
+                                        linhas alternadas, combinando diferentes espécies com características de
+                                        crescimento distintas. Esse modelo permite acelerar a restauração, mas é menos
+                                        vantajoso em termos ecológicos e econômicos devido à menor probabilidade de
+                                        sucesso ecológico e maior necessidade de manutenção, o que eleva os custos.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Fim Row -->
+                </div><!-- Fim Conteiner -->
+            </div> <!-- Fim Direito -->
 
         </div>
     </section>

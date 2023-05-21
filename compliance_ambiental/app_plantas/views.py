@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.views.decorators.http import require_POST
 from django.views.decorators.cache import cache_control
 from .models import Plantas, Projetos
 from .utils import inserir_dados
@@ -13,7 +12,6 @@ from .utils import inserir_dados
 # Create your views here.
 def home(request):
     return render(request, "basico/home.html")
-
 
 def cadastro(request):
     if request.method == "GET":
@@ -58,18 +56,19 @@ def login_app(request):
         else:
             return HttpResponse("Usuário ou senha inválidos")
 
+@cache_control(no_cache=True, must_revalidade=True, no_store=True)
 def logout_app(request):
     logout(request)
     messages.success(request, "Você foi deslogado com sucesso!")
     return redirect('home')
 
 @login_required(login_url="/auth/login/")
-@cache_control(no_cache=True, must_revalidade=True, no_store=True)
 def plataforma(request):
     plantas_list = Plantas.objects.all()
     context = {"plantas_list": plantas_list}
     return render(request, "users/plataforma.html", context) # return render(request, "users/plataforma.html")
 
+@login_required(login_url="/auth/login/")
 def projetos(request):
     plantas_list = Plantas.objects.all()
     projetos_list = Projetos.objects.all()
@@ -77,6 +76,7 @@ def projetos(request):
                "projetos_list": projetos_list}
     return render(request, "users/projetos.html", context)
 
+@login_required(login_url="/auth/login/")
 def criar_projeto(request):
     plantas_list = Plantas.objects.all()
     projetos_list = Projetos.objects.all()
@@ -101,6 +101,7 @@ def criar_projeto(request):
         print("A planta buscada é: ", planta_bd.especie, "id: ", planta_bd.id_planta)
         return render(request, "users/projetos.html", context)
 
+@login_required(login_url="/auth/login/")
 def detalhe_projeto(request, id_projeto):
     projeto = Projetos.objects.get(id_projeto=id_projeto)
     aux_list = projeto.plantas.all()
@@ -108,6 +109,7 @@ def detalhe_projeto(request, id_projeto):
                "projeto": projeto}
     return render(request, "users/detalhe_projeto.html", context)
 
+@login_required(login_url="/auth/login/")
 def altera_projeto(request, id_projeto):
     nome = request.POST.get("titulo")
     descricao = request.POST.get("descricao")
@@ -118,11 +120,13 @@ def altera_projeto(request, id_projeto):
     projeto.save()
     return redirect('criar_projeto')
 
+@login_required(login_url="/auth/login/")
 def deleta_projeto(request, id_projeto):
     projeto = Projetos.objects.get(id_projeto=id_projeto)
     projeto.delete()
     return redirect('criar_projeto')
 
+@login_required(login_url="/auth/login/")
 def plantas(request):
     plantas_list = Plantas.objects.all()
     if not plantas_list:
@@ -135,6 +139,7 @@ def plantas(request):
     context = {"plantas_list": plantas_list}
     return render(request, "users/plantas.html", context)
 
+@login_required(login_url="/auth/login/")
 def detalhe_planta(request, id_planta):
     planta= Plantas.objects.get(id_planta=id_planta)
     nos_projetos= planta.projetos.all()
@@ -147,6 +152,7 @@ def detalhe_planta(request, id_planta):
                "outros_projetos": outros_projetos}
     return render(request, "users/detalhe_planta.html", context)
 
+@login_required(login_url="/auth/login/")
 def add_planta(request, id_planta, id_projeto):
     projeto = Projetos.objects.get(id_projeto=id_projeto)
     planta= Plantas.objects.get(id_planta=id_planta)
@@ -157,6 +163,7 @@ def add_planta(request, id_planta, id_projeto):
     projeto.save()
     return redirect('detalhe_planta', id_planta)
 
+@login_required(login_url="/auth/login/")
 def remove_planta(request, id_planta, id_projeto):
     projeto = Projetos.objects.get(id_projeto=id_projeto)
     planta= Plantas.objects.get(id_planta=id_planta)

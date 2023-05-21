@@ -2,34 +2,54 @@
 {% block content %}
 <!-- Conteúdo página inicial. -->
 {% for message in messages %}
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    {% if message.tags == "info" %}
-    <script>
-        var m= "{{ message }}";
-        swal("Bloqueado !", m, "info")
-    </script>
-    {% elif message.tags == "error" %}
-    <script>
-        var m= "{{ message }}";
-        swal("Negado !", m, "error")
-    </script>
-    {% elif message.tags == "success" %}
-    <script>
-        var m= "{{ message }}";
-        swal("OK !", m, "success")
-    </script>
-    {% endif %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if message.tags == "info" %}
+<script>
+    var m = "{{ message }}";
+    swal("Bloqueado !", m, "info")
+</script>
+{% elif message.tags == "error" %}
+<script>
+    var m = "{{ message }}";
+    swal("Negado !", m, "error")
+</script>
+{% elif message.tags == "success" %}
+<script>
+    var m = "{{ message }}";
+    swal("OK !", m, "success")
+</script>
+{% endif %}
 {% endfor %}
-<div class="container text-center">
+<div class="container justify-content-between">
     <div class="row">
         <!-- Conteúdo esquerda. -->
         <div class="col-sm">
-            Aqui vai um texto explicativo.
+            <p class="fs-5">
+                O <em class="text-success">compliance ambiental</em> cuida de todas as atitudes, processos e boas
+                práticas
+                que uma pessoa física ou empresa deve adotar para prevenir,
+                identificar e sanar impactos indevidos ao meio ambiente.
+            </p>
+            <p class="fs-5">
+                Enquanto que a <em class="text-success">restauração ambiental</em> visa recuperar uma área degradada,
+                seguindo os processos naturais de
+                sucessão e considerando as interferências externas nos ecossistemas.
+            </p>
+            <p class="fs-5">
+                Além disso, abrange a recuperação tanto do meio biótico quanto do meio físico, 
+                buscando o equilíbrio e a integridade do ecossistema.
+            </p>
+            <p class="fs-5">
+                Embora possa não ser possível atingir o estado original da área,
+                é importante acelerar as mudanças das comunidades para promover resiliência.
+            </p>
         </div>
 
         <!-- Conteúdo direita. -->
         <div class="col-sm">
-            Aqui vai uma imagem (provavelmente unsplash)
+            {% load static %}
+            <img src="{% static 'app_plantas/undraw_environment_iaus.png' %}" class="card-img-top"
+                alt="Restauração ambiental">
         </div>
 
     </div>

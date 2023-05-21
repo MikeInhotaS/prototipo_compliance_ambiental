@@ -14,13 +14,17 @@
     <!-- Header -->
     <header class="p-3 text-bg-dark">
         <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <div class="d-flex flex-wrap align-items-center justify-content-lg-start">
+
                 <a href="/"
                     class="d-flex align-items-center mb-2 mb-lg-0 fs-5 fw-semibold text-success text-decoration-none">
                     Compliance Ambiental
                     <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg> -->
                 </a>
-
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-lg-start mb-md-0">
+                    <li class="px-3 text-white"></li>
+                </ul>
+                {% if user.is_authenticated %}
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li class="px-3 text-white"></li>
                     <li><a href="{% url 'plataforma' %}" class="nav-link px-2 text-white">Inicio</a></li>
@@ -28,6 +32,7 @@
                     <li><a href="{% url 'projetos' %}" class="nav-link px-2 text-white">Projetos</a></li>
                     <!-- <li><a href="#" class="nav-link px-2 text-white">Sobre</a></li> -->
                 </ul>
+                {% endif %}
 
                 <div class="text-end">
                     {% if user.is_authenticated %}
