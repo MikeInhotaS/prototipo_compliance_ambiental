@@ -13,6 +13,7 @@ from .utils import inserir_dados
 def home(request):
     return render(request, "basico/home.html")
 
+
 def cadastro(request):
     if request.method == "GET":
         return render(request, "users/cadastro.html")
@@ -26,9 +27,8 @@ def cadastro(request):
         try:
             existe_usuario = User.objects.get(username=username)
             if existe_usuario:
-                return HttpResponse(
-                    f"O nome de usuário - {username} - já existe, tente outro."
-                )
+                messages.error(request, f"O nome de usuário - {username} - já existe, tente outro.")
+                return redirect("cadastro")
         except User.DoesNotExist:
             novo_usuário = User.objects.create_user(
                 username=username,
@@ -38,9 +38,12 @@ def cadastro(request):
                 password=password,
             )
             novo_usuário.save()
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+            messages.success(request, "Você está logado!")
+            return redirect("plataforma")
 
-        return HttpResponse(f"Cadastrado como: {username}")
-    # depois necessário logar esse mesmo usuário novo.
 
 def login_app(request):
     if request.method == "GET":
@@ -52,79 +55,85 @@ def login_app(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, "Você está logado!")
             return render(request, "users/plataforma.html")
         else:
-            return HttpResponse("Usuário ou senha inválidos")
+            messages.error(request, "Usuário ou Senha inválidos!")
+            return redirect("plataforma")
+
 
 @cache_control(no_cache=True, must_revalidade=True, no_store=True)
 def logout_app(request):
     logout(request)
     messages.success(request, "Você foi deslogado com sucesso!")
-    return redirect('home')
+    return redirect("home")
+
 
 @login_required(login_url="/auth/login/")
 def plataforma(request):
     plantas_list = Plantas.objects.all()
     context = {"plantas_list": plantas_list}
-    return render(request, "users/plataforma.html", context) # return render(request, "users/plataforma.html")
+    return render(
+        request, "users/plataforma.html", context
+    )  # return render(request, "users/plataforma.html")
+
 
 @login_required(login_url="/auth/login/")
 def projetos(request):
     plantas_list = Plantas.objects.all()
     projetos_list = Projetos.objects.all()
-    context = {"plantas_list": plantas_list,
-               "projetos_list": projetos_list}
+    context = {"plantas_list": plantas_list, "projetos_list": projetos_list}
     return render(request, "users/projetos.html", context)
+
 
 @login_required(login_url="/auth/login/")
 def criar_projeto(request):
     plantas_list = Plantas.objects.all()
     projetos_list = Projetos.objects.all()
-    context = {"plantas_list": plantas_list,
-               "projetos_list": projetos_list}
-    
+    context = {"plantas_list": plantas_list, "projetos_list": projetos_list}
+
     if request.method == "GET":
         return render(request, "users/projetos.html", context)
-    else:        
+    else:
         nome = request.POST.get("titulo")
         descricao = request.POST.get("descricao")
         planta_select = request.POST.get("planta_select")
-        planta_select= int(planta_select)
-        novo_projeto = Projetos.objects.create(
-                nome = nome,
-                descricao = descricao
-            )
+        planta_select = int(planta_select)
+        novo_projeto = Projetos.objects.create(nome=nome, descricao=descricao)
         novo_projeto.save()
         print("O novo projeto: ", novo_projeto)
-        planta_bd= Plantas.objects.get(id_planta=planta_select)
+        planta_bd = Plantas.objects.get(id_planta=planta_select)
         novo_projeto.plantas.add(planta_bd)
         print("A planta buscada é: ", planta_bd.especie, "id: ", planta_bd.id_planta)
         return render(request, "users/projetos.html", context)
+
 
 @login_required(login_url="/auth/login/")
 def detalhe_projeto(request, id_projeto):
     projeto = Projetos.objects.get(id_projeto=id_projeto)
     aux_list = projeto.plantas.all()
-    context = {"plantas_list": aux_list,
-               "projeto": projeto}
+    context = {"plantas_list": aux_list, "projeto": projeto}
     return render(request, "users/detalhe_projeto.html", context)
+
 
 @login_required(login_url="/auth/login/")
 def altera_projeto(request, id_projeto):
     nome = request.POST.get("titulo")
     descricao = request.POST.get("descricao")
     projeto = Projetos.objects.get(id_projeto=id_projeto)
-    print('o nome do projeto a ser alterado é: ', projeto.nome)
+    print("o nome do projeto a ser alterado é: ", projeto.nome)
     projeto.nome = nome
     projeto.descricao = descricao
     projeto.save()
-    return redirect('criar_projeto')
+    return redirect("criar_projeto")
+
 
 @login_required(login_url="/auth/login/")
 def deleta_projeto(request, id_projeto):
     projeto = Projetos.objects.get(id_projeto=id_projeto)
     projeto.delete()
-    return redirect('criar_projeto')
+    return redirect("criar_projeto")
+
 
 @login_required(login_url="/auth/login/")
 def plantas(request):
@@ -139,37 +148,43 @@ def plantas(request):
     context = {"plantas_list": plantas_list}
     return render(request, "users/plantas.html", context)
 
+
 @login_required(login_url="/auth/login/")
 def detalhe_planta(request, id_planta):
-    planta= Plantas.objects.get(id_planta=id_planta)
-    nos_projetos= planta.projetos.all()
-    id_projeto=[projeto.id_projeto for projeto in nos_projetos]
-    print("id_projeto é: ",id_projeto)
+    planta = Plantas.objects.get(id_planta=id_planta)
+    nos_projetos = planta.projetos.all()
+    id_projeto = [projeto.id_projeto for projeto in nos_projetos]
+    print("id_projeto é: ", id_projeto)
     outros_projetos = Projetos.objects.exclude(id_projeto__in=id_projeto)
-    print("Os projetos que não tem esta planta: ",outros_projetos)
-    context = {"planta": planta, 
-               "nos_projetos": nos_projetos,
-               "outros_projetos": outros_projetos}
+    print("Os projetos que não tem esta planta: ", outros_projetos)
+    context = {
+        "planta": planta,
+        "nos_projetos": nos_projetos,
+        "outros_projetos": outros_projetos,
+    }
     return render(request, "users/detalhe_planta.html", context)
+
 
 @login_required(login_url="/auth/login/")
 def add_planta(request, id_planta, id_projeto):
     projeto = Projetos.objects.get(id_projeto=id_projeto)
-    planta= Plantas.objects.get(id_planta=id_planta)
+    planta = Plantas.objects.get(id_planta=id_planta)
     projeto.plantas.add(planta)
     print("Projeto: ", projeto, "Planta: ", planta)
     todas = projeto.plantas.all()
     print("As plan deste proj agora são: ", todas)
     projeto.save()
-    return redirect('detalhe_planta', id_planta)
+    return redirect("detalhe_planta", id_planta)
+
 
 @login_required(login_url="/auth/login/")
 def remove_planta(request, id_planta, id_projeto):
     projeto = Projetos.objects.get(id_projeto=id_projeto)
-    planta= Plantas.objects.get(id_planta=id_planta)
+    planta = Plantas.objects.get(id_planta=id_planta)
     projeto.plantas.remove(planta)
     projeto.save()
-    return redirect('detalhe_planta', id_planta)
+    return redirect("detalhe_planta", id_planta)
+
 
 plantas_sao_p = [
     [
